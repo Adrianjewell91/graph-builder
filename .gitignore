@@ -1,0 +1,4 @@
+input/*
+output/*    
+scripts/sandbox/*
+scripts/__pycache__/*

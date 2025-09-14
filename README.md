@@ -27,19 +27,24 @@ Given a log of SQL queries:
 # Implementation:
 
 Two possible strategies for graph-building resulted in largely the same outcome:
-	- JOINs connect Clients to Tables.
-	- FROMS connect Clients to Tables, and JOINS connect Tables to Tables.
+1. JOINs connect Clients to Tables.
+2. FROMS connect Clients to Tables, and JOINS connect Tables to Tables.
 	
 	
 The known labels are:
-	- Inside or Outisde the largest connected component.
-	- Client or Table.
+1. Inside or Outisde the largest connected component.
+2. Client or Table.
 
 
 These two labels were determined by the observing two properties the graphs in cosmograph:
 1. That there was one very large connected component, and many small ones.
 2. That there were relatively equal number of clients and tables (but more clients overall).
 
+One additional note is that directed Node2Vec worked better for Clients/Table label for while undirected node2vec worked better for the Connected Component feature. This is because (in theory), undirected sampling better captures homophily, and directed samples better captures structural equivalance. 
+
+Some possible reasons for this are: 
+
+For example, all clients have no parents in that directed model, that is an important structural equivalence. Conversely, membership in largest connected component is better understood by homophily, which is easier to capture by allowing more randomness in the sampling (ie. ignoring directedness), so that samples can better traverse the largest connected component. 
 
 # Input:
 A csv of sql_hashes and queries, taken from solrwind db analyzer. Roughly 20K queries (before deduplication).

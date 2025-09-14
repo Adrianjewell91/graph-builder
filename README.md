@@ -1,11 +1,9 @@
 # Quick Start
 https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/ 
 
-`sudo sh pipeline.sh `
+`sudo sh pipeline.sh [file].csv`
 
-# Explanation
-
-### Introduction
+# Introduction
 
 This project demonstrates that embedding algorithms are able to encode properties of large real-world graphs. 
 
@@ -16,7 +14,7 @@ ML algorthims can be helpful when the scale makes visualizing and reasoning abou
 The data for this project is a month's log of SQL queries against an MSSQL server, about 20K queries (after deduplication).
 
 
-### Requirements:
+# Requirements:
 
 Given a log of SQL queries: 
 1. Build a graph of relationships between clients and tables using FROM and JOIN clauses. 
@@ -26,65 +24,68 @@ Given a log of SQL queries:
 	- Inside or Outside the largest connected component.
 
 
-### Implementation:
+# Implementation:
 
-- Two possible strategies for graph-building resulted in largely the same outcome:
+Two possible strategies for graph-building resulted in largely the same outcome:
 	- JOINs connect Clients to Tables.
 	- FROMS connect Clients to Tables, and JOINS connect Tables to Tables.
 	
 	
-- The known labels are:
+The known labels are:
 	- Inside or Outisde the largest connected component.
 	- Client or Table.
 
 
-These two labels were determined after observing two properties of the graphs:
+These two labels were determined by the observing two properties the graphs in cosmograph:
 1. That there was one very large connected component, and many small ones.
 2. That there were relatively equal number of clients and tables (but more clients overall).
 
 
-### Input:
+# Input:
 A csv of sql_hashes and queries, taken from solrwind db analyzer. Roughly 20K queries (before deduplication).
 
-### Results:
+# Results:
 
-The main result is the ability to easily divide the nodes according to known labels using a straight line or curved line. This suggests that the embedding algorithm successfully embedded the respective property of the graph into vector space. 
+The main result is the ability to easily divide the nodes according to known labels using a straight or curved line. This suggests that the embedding algorithm successfully embedded the respective property of the graph into vector space, and therefore could be useful in future model building.
 
-The consequence of this is the potential for this data to be useful in future model building.
+# Examples:
 
-### Examples:
+## Tables to Tables:
 
-Graph of Tables to Tables (using cosmograph):
+### (using cosmograph)
 
 ![alt text](imgs/cosmograph-tablestotables.png)
 
 
-Visualization of Client vs Tables 
+### Visualization of Client vs Tables: 
 (tables to tables)
 ![alt text](imgs/clientvstable-tablestotables.png) 
 
 
-Visualization of Inside vs Outside Largest Connect Component (tables to tables strategy):
+### Visualization of Inside vs Outside Largest Connect Component (tables to tables strategy):
 
 ![alt text](imgs/componentmembership-tablestotables.png)
 
 
 
-Graph of Clients to Tables (using cosmograph):
+## Clients to Tables 
+
+
+### (using cosmograph):
 
 ![alt text](imgs/cosmograph-clientstotables.png)
 
-Visualization of Client vs Tables (client to tables strategy):
+### Visualization of Client vs Tables (client to tables strategy):
 
 ![alt text](imgs/clientvstable-clientstotables.png) 
 
-Visualization of Inside vs Outside Largest Connect Component 
+### Visualization of Inside vs Outside Largest Connect Component 
 (clients to tables strategy):
 
 ![alt text](imgs/componentmembership-clientstotables.png)
 
 
-### Discussion:
+# Discussion:
 
 There are information trade-offs associated with each graph-building method. As mentioned, there are two ways to parse the SQL logs and build the graph. The first way is to connect Clients to Tables regardless of purpose (FROM, JOIN etc), while the second way is the connect Clients to the FROM Tables and link Tables to Tables according to JOINs.
 
